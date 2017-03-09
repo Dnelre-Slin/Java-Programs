@@ -14,10 +14,16 @@ public class Node2 <T extends Comparable> implements NodeI<T>{
     @Override
     public NodeI<T> append(T append_value){
         if (left != null && append_value.compareTo(value) < 0){
-            left = left.append(append_value);
+            NodeI<T> tmp_node = left.append(append_value);
+            if (tmp_node != null){
+                return mergeLeft(tmp_node);
+            }
         }
         else if (right != null && append_value.compareTo(value) >= 0){
-            right = right.append(append_value);
+            NodeI<T> tmp_node = right.append(append_value);
+            if (tmp_node != null){
+                return mergeRight(tmp_node);
+            }
         }
         else{
             return remakeNode(append_value);
@@ -38,11 +44,26 @@ public class Node2 <T extends Comparable> implements NodeI<T>{
         NodeI<T> new_node = new Node3(left_value,right_value);
         return new_node;
     }
+    
+    public NodeI<T> mergeLeft(NodeI<T> merge_node){
+        NodeI<T> new_this = new Node3(merge_node.getValue(),value);
+//        new_this.setChildren(merge_node., right);
+        return this;
+    }
+    public NodeI<T> mergeRight(NodeI<T> merge_node){
+        
+        return this;
+    }
 
     @Override
     public void setChildren(NodeI<T> left_child, NodeI<T> right_child) {
         left = left_child;
         right = right_child;
+    }
+    
+    @Override
+    public T getValue(){
+        return value;
     }
 }
 

@@ -55,4 +55,8 @@ public class Node3 <T extends Comparable> implements NodeI<T>{
         //Do nothing.
     }
     
+    public T getValue(){
+        return null; //This will never happend.
+    }
+    
 }
