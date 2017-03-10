@@ -88,7 +88,7 @@ public class Node2 <T extends Comparable> implements NodeI<T>{
     }
 
     @Override
-    public void drawTree(GUI gui, ) {
+    public void drawTree(GUI gui, POS pos, POS parent_mid, POS size, int gap) {
         
     }
 }
