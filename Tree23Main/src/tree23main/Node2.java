@@ -1,6 +1,7 @@
 package tree23main;
 
 import guiframe.GUI;
+import java.awt.Color;
 
 public class Node2 <T extends Comparable> implements NodeI<T>{
     protected T value;
@@ -89,7 +90,32 @@ public class Node2 <T extends Comparable> implements NodeI<T>{
 
     @Override
     public void drawTree(GUI gui, POS pos, POS parent_mid, POS size, int gap) {
+        if (gap <= 0){
+            gap = 1;
+        }
+        POS mid = new POS();
+
+        mid.x = pos.x + (size.x/2);
+        mid.y = pos.y + (size.y/2);
         
+        if (left != null){
+            POS left_pos = new POS();
+            left_pos.x = pos.x - (gap/2);
+            left_pos.y = pos.y + (size.y+(size.y/2));
+            left.drawTree(gui, left_pos, mid, size,gap/2);
+        }
+        if (right != null){
+            POS right_pos = new POS();
+            right_pos.x = pos.x + (gap/2);
+            right_pos.y = pos.y + (size.y+(size.y/2));
+            right.drawTree(gui, right_pos, mid, size,gap/2);
+        }
+        
+        gui.draw("fillOval", pos.x, pos.y, size.x, size.y);
+        if (parent_mid != null){
+            gui.drawLine(mid.x, mid.y, parent_mid.x, parent_mid.y, 2);
+        }
+        gui.drawString(value.toString(), pos.x+6, pos.y+14, Color.white);
     }
 }
 

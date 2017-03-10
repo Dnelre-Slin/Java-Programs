@@ -1,5 +1,7 @@
 package tree23main;
 
+import guiframe.GUI;
+
 public class Tree <T extends Comparable> {
     NodeI root;
     public Tree(){
@@ -25,4 +27,16 @@ public class Tree <T extends Comparable> {
         }
         System.out.println("  ]");
     }
+    
+    public void drawTree(GUI gui){
+        if (root != null){
+            POS pos = new POS(400,20);
+            POS parent_mid = null;
+            POS size = new POS(20,20);
+            int start_gap = 350;
+            root.drawTree(gui,pos,parent_mid,size,start_gap);
+        }
+    }
+    
+                
 }

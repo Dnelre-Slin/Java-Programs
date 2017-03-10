@@ -1,5 +1,8 @@
 package tree23main;
 
+import guiframe.GUI;
+import java.awt.Color;
+
 public class Node3 <T extends Comparable> extends Node2<T> implements NodeI<T>{
     protected T value_right;
     protected NodeI<T> mid;
@@ -22,26 +25,10 @@ public class Node3 <T extends Comparable> extends Node2<T> implements NodeI<T>{
                     return mergeMid((Node2<T>)tmp_node);
                 }
             }
+            return null;
         }
         return super.append(append_value);
     }
-    
-//    @Override
-//    public NodeI<T> append(T append_value) {
-//        if (left != null && append_value.compareTo(value) < 0){
-//            left = left.append(append_value);
-//        }
-//        else if (mid != null && append_value.compareTo(value_right) < 0){
-//            mid = mid.append(append_value);
-//        }
-//        else if (right != null && append_value.compareTo(value_right) >= 0){
-//            right = right.append(append_value);
-//        }
-//        else{
-//            return remakeNode(append_value);
-//        }
-//        return this;
-//    }
     
     @Override
     public NodeI<T> remakeNode(T append_value){
@@ -115,5 +102,42 @@ public class Node3 <T extends Comparable> extends Node2<T> implements NodeI<T>{
         if (right != null){
             right.inOrder();
         }
+    }
+    
+    @Override
+    public void drawTree(GUI gui, POS pos, POS parent_mid, POS size, int gap) {
+        if (gap <= 0){
+            gap = 1;
+        }
+        POS mid = new POS();
+
+        mid.x = pos.x + (size.x/2);
+        mid.y = pos.y + (size.y/2);
+        
+        if (left != null){
+            POS left_pos = new POS();
+            left_pos.x = pos.x - (gap/2);
+            left_pos.y = pos.y + (size.y+(size.y/2));
+            left.drawTree(gui, left_pos, mid, size,gap/2);
+        }
+        if (this.mid != null){
+            POS mid_pos = new POS();
+            mid_pos.x = pos.x;
+            mid_pos.y = pos.y + (size.y+(size.y/2));
+            this.mid.drawTree(gui, mid_pos, mid, size,gap/2);
+        }
+        if (right != null){
+            POS right_pos = new POS();
+            right_pos.x = pos.x + (gap/2);
+            right_pos.y = pos.y + (size.y+(size.y/2));
+            right.drawTree(gui, right_pos, mid, size,gap/2);
+        }
+        
+        gui.draw("fillOval", pos.x, pos.y, size.x+10, size.y);
+        if (parent_mid != null){
+            gui.drawLine(mid.x, mid.y, parent_mid.x, parent_mid.y, 2);
+        }
+        gui.drawString(value.toString(), pos.x+6, pos.y+14, Color.white);
+        gui.drawString(value_right.toString(), pos.x+17, pos.y+14, Color.white);
     }
 }
