@@ -76,6 +76,26 @@ public class Node2 <T extends Comparable> implements NodeI<T>{
         n3.right = m_node.right;
         return n3;
     }
+    
+    @Override
+    public NodeI<T> search(T search_value){
+        if (search_value.equals(value)){
+            return this;
+        }
+        if (left != null && search_value.compareTo(value) < 0){
+            return left.search(search_value);
+        }
+        if (right != null && search_value.compareTo(value) > 0){
+            return right.search(search_value);
+        }
+        System.out.println("Value not in tree. Null returned.");
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 
     @Override
     public void inOrder() {

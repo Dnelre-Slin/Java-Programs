@@ -7,6 +7,12 @@ public class Tree23Main {
     public static void main(String[] args) {
         Tree<Integer> t = new Tree();
         
+        for (int i = 0; i < 10; i++) {
+            t.append(i);
+        }
+        
+        System.out.println(t.search(5));
+        
         GUI gui = new GUI();
         t.drawTree(gui);
         

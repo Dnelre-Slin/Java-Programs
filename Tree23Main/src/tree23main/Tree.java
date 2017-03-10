@@ -20,6 +20,14 @@ public class Tree <T extends Comparable> {
         }
     }
     
+    public NodeI<T> search(T search_value){
+        if (root != null){
+            return root.search(search_value);
+        }
+        System.out.println("Tree is empty. Null returned");
+        return null;
+    }
+    
     public void inOrder(){
         System.out.print("InOrder: [");
         if (root != null){

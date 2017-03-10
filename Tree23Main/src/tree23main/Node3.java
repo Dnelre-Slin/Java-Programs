@@ -88,6 +88,22 @@ public class Node3 <T extends Comparable> extends Node2<T> implements NodeI<T>{
         top_node.right = right_node;
         return top_node;
     }
+
+    @Override
+    public NodeI<T> search(T search_value) {
+        if (search_value.equals(value_right)){
+            return this;
+        }
+        if (mid != null && search_value.compareTo(value) > 0 && search_value.compareTo(value_right) < 0){
+            return mid.search(search_value);
+        }
+        return super.search(search_value);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString() + " & " + value_right.toString();
+    }
     
     @Override
     public void inOrder(){
@@ -118,19 +134,19 @@ public class Node3 <T extends Comparable> extends Node2<T> implements NodeI<T>{
             POS left_pos = new POS();
             left_pos.x = pos.x - (gap/2);
             left_pos.y = pos.y + (size.y+(size.y/2));
-            left.drawTree(gui, left_pos, mid, size,gap/2);
+            left.drawTree(gui, left_pos, mid, size,gap/3);
         }
         if (this.mid != null){
             POS mid_pos = new POS();
             mid_pos.x = pos.x;
             mid_pos.y = pos.y + (size.y+(size.y/2));
-            this.mid.drawTree(gui, mid_pos, mid, size,gap/2);
+            this.mid.drawTree(gui, mid_pos, mid, size,gap/3);
         }
         if (right != null){
             POS right_pos = new POS();
             right_pos.x = pos.x + (gap/2);
             right_pos.y = pos.y + (size.y+(size.y/2));
-            right.drawTree(gui, right_pos, mid, size,gap/2);
+            right.drawTree(gui, right_pos, mid, size,gap/3);
         }
         
         gui.draw("fillOval", pos.x, pos.y, size.x+10, size.y);
