@@ -1,9 +1,11 @@
 package tree23main;
 
+import guiframe.GUI;
+
 public class Node2 <T extends Comparable> implements NodeI<T>{
-    T value;
-    NodeI<T> left;
-    NodeI<T> right;
+    protected T value;
+    protected NodeI<T> left;
+    protected NodeI<T> right;
     
     public Node2(T start_value){
         value = start_value;
@@ -16,19 +18,29 @@ public class Node2 <T extends Comparable> implements NodeI<T>{
         if (left != null && append_value.compareTo(value) < 0){
             NodeI<T> tmp_node = left.append(append_value);
             if (tmp_node != null){
-                return mergeLeft(tmp_node);
+                try{
+                    left = checkN3((Node3<T>) tmp_node);
+                }
+                catch(Exception e){
+                    return mergeLeft((Node2<T>)tmp_node);
+                }
             }
         }
         else if (right != null && append_value.compareTo(value) >= 0){
             NodeI<T> tmp_node = right.append(append_value);
             if (tmp_node != null){
-                return mergeRight(tmp_node);
+                try{
+                    right = checkN3((Node3<T>) tmp_node);
+                }
+                catch(Exception e){
+                    return mergeRight((Node2<T>)tmp_node);
+                }
             }
         }
         else{
             return remakeNode(append_value);
         }
-        return this;
+        return null;
     }
     
     public NodeI<T> remakeNode(T append_value){
@@ -44,26 +56,40 @@ public class Node2 <T extends Comparable> implements NodeI<T>{
         NodeI<T> new_node = new Node3(left_value,right_value);
         return new_node;
     }
-    
-    public NodeI<T> mergeLeft(NodeI<T> merge_node){
-        NodeI<T> new_this = new Node3(merge_node.getValue(),value);
-//        new_this.setChildren(merge_node., right);
-        return this;
+
+    public NodeI<T> checkN3(Node3<T> n3){
+        return n3;
     }
-    public NodeI<T> mergeRight(NodeI<T> merge_node){
-        
-        return this;
+    
+    public NodeI<T> mergeLeft(Node2<T> m_node){
+        Node3<T> n3 = new Node3(m_node.value,value);
+        n3.left = m_node.left;
+        n3.mid = m_node.right;
+        n3.right = right;
+        return n3;
+    }
+    public NodeI<T> mergeRight(Node2<T> m_node){
+        Node3<T> n3 = new Node3(value,m_node.value);
+        n3.left = left;
+        n3.mid = m_node.left;
+        n3.right = m_node.right;
+        return n3;
     }
 
     @Override
-    public void setChildren(NodeI<T> left_child, NodeI<T> right_child) {
-        left = left_child;
-        right = right_child;
+    public void inOrder() {
+        if (left != null){
+            left.inOrder();
+        }
+        System.out.print("  " + value);
+        if (right != null){
+            right.inOrder();
+        }
     }
-    
+
     @Override
-    public T getValue(){
-        return value;
+    public void drawTree(GUI gui, ) {
+        
     }
 }
 

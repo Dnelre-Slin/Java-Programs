@@ -11,7 +11,18 @@ public class Tree <T extends Comparable> {
             root = new Node2(new_value);
         }
         else{
-            root.append(new_value);
+            NodeI<T> tmp_node = root.append(new_value);
+            if (tmp_node != null){
+                root = tmp_node;
+            }
         }
+    }
+    
+    public void inOrder(){
+        System.out.print("InOrder: [");
+        if (root != null){
+            root.inOrder();
+        }
+        System.out.println("  ]");
     }
 }
