@@ -10,8 +10,8 @@ public class Vertex <Key extends Comparable,T>{
         edges = new LinkedList<>();
     }
     
-    public void addEdge(Key add_key, Vertex<Key,T> add_vertex){
-        edges.append(add_key, add_vertex);
+    public void addEdge(Key add_key, Vertex<Key,T> add_edge){
+        edges.append(add_key, add_edge);
     }
     public void removeEdge(Key remove_key){
         edges.delete(remove_key);
@@ -24,5 +24,10 @@ public class Vertex <Key extends Comparable,T>{
     
     public T getCore(){
         return core;
+    }
+
+    @Override
+    public String toString() {
+        return core.toString();
     }
 }
