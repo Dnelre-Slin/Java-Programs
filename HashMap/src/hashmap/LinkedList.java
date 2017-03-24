@@ -1,66 +1,65 @@
 package hashmap;
 
 public class LinkedList <Key extends Comparable,T>{
-    private Key key;
-    private T value;
-    private LinkedList<Key,T> next;
-    
-    public LinkedList(Key new_key, T new_value){
-        key = new_key;
-        value = new_value;
-        next = null;
-    }
+    Node<Key,T> first;
+    int size;
     public LinkedList(){
-        this(null,null);
+        first = null;
+        size = 0;
+    }
+    public LinkedList(Key key, T value){
+        first = new Node<>(key,value);
+        size = 1;
     }
     
     public void append(Key append_key, T append_value){
-        if (key == null){
-            key = append_key;
-            value = append_value;
-        }
-        else if (next == null){
-            next = new LinkedList(append_key, append_value);
+        if (first == null){
+            first = new Node<>(append_key,append_value);
         }
         else{
-            next.append(append_key, append_value);
+            first.append(append_key, append_value);
+        }
+        size++;
+    }
+    public void append(LinkedList<Key,T> append_list){
+        Node<Key,T> tmp = findLast();
+        Node<Key,T> append_node = append_list.first;
+        while (append_node != null){
+            append(append_node.getKey(),append_node.getValue());
+            append_node = append_node.getNext();
         }
     }
     
-    public LinkedList<Key,T> search(Key search_key){
-        if (search_key.equals(key)){
-            return this;
+    public Node search(Key search_key){
+        if (first != null){
+            return first.search(search_key);
         }
-        if (next != null){
-            return next.search(search_key);
-        }
-        System.out.println("Value not in list.");
         return null;
     }
     
-    public LinkedList<Key,T> delete(Key delete_key){
-        if (delete_key.equals(key)){
-            return next;
+    public void delete(Key delete_key){
+        if (first != null){
+            first = first.delete(delete_key);
+            size--;
         }
-        if (next != null){
-            next = next.delete(delete_key);
-        }
-        return this;
-    }
-    
-    public T getValue(){
-        return value;
     }
     
     public String print(){
-        String s = "";
-        s += value.toString();
-        s += (next!=null)?(", " + next.print()):"";
-        return s;
+        return (first != null)?first.print():"";
     }
-
-    @Override
-    public String toString() {
-        return value.toString();
+    
+    private Node<Key,T> findLast(){
+        if (first != null){
+            first.findLast();
+        }
+        return first;
+    }
+    
+    public Node<Key,T> getFirst(){
+        return first;
+    }
+    
+    public int size(){
+        return size;
     }
 }

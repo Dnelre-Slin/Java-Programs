@@ -1,5 +1,7 @@
 package hashmap;
 
+import java.util.ArrayList;
+
 public class HashMap <Key extends Comparable,T>{
     Key key;
     LinkedList<Key,T>[] array;
@@ -24,7 +26,7 @@ public class HashMap <Key extends Comparable,T>{
     public T search(Key search_key){
         int index = getIndex(search_key);
         if (array[index] != null){
-            LinkedList<Key,T> tmp = array[index].search(search_key);
+            Node<Key,T> tmp = array[index].search(search_key);
             return (tmp != null)?tmp.getValue():null;
         }
         System.out.println("Value not in table");
@@ -52,5 +54,15 @@ public class HashMap <Key extends Comparable,T>{
             }
         }
         return s;
+    }
+    
+    public LinkedList<Integer,LinkedList<Key,T>> getAllElements(){
+        LinkedList<Integer,LinkedList<Key,T>> tmp_list = new LinkedList<>();
+        for (int i=0; i<array.length; i++){
+            if (array[i] != null){
+                tmp_list.append(i,array[i]);
+            }
+        }
+        return tmp_list;
     }
 }
