@@ -12,9 +12,16 @@ public class Main {
         g.addVertex(9, 9);
         
         g.addEdge(3, 6);
+        g.addEdge(3, 7);
         g.addEdge(7, 9);
         g.addEdge(1, 2);
         
-        System.out.println(g);
+        g.printVertexEdges();
+        System.out.println("\n\n");
+        
+        g.removeEdge(3,7);
+        
+        g.printVertexEdges();
+        
     }
 }

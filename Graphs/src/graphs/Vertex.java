@@ -1,5 +1,6 @@
 package graphs;
 import hashmap.LinkedList;
+import hashmap.Node;
 
 public class Vertex <Key extends Comparable,T>{
     private LinkedList<Key,Vertex<Key,T>> edges;
@@ -18,12 +19,15 @@ public class Vertex <Key extends Comparable,T>{
     }
     
     public Vertex<Key,T> findEdge(Key find_key){
-        LinkedList<Key,Vertex<Key,T>> tmp = edges.search(find_key);
+        Node<Key,Vertex<Key,T>> tmp = edges.search(find_key);
         return (tmp!=null)?tmp.getValue():null;
     }
     
     public T getCore(){
         return core;
+    }
+    public LinkedList<Key,Vertex<Key,T>> getEdges(){
+        return edges;
     }
 
     @Override
