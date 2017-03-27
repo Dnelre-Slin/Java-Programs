@@ -53,8 +53,26 @@ public class Graph <K extends Comparable, T>{
         }
     }
     
+    public boolean isNeighbors(K _key1, K _key2){
+        Vertex<K,T> _vertex = map.get(_key1);
+        if (_vertex != null && _vertex.getEdge(_key2) != null){
+            return true;
+        }
+        return false;
+    }
+    public ArrayList<Vertex<K,T>> getNeighbors(K _key){
+        Vertex<K,T> _vertex = map.get(_key);
+        if (_vertex != null){
+            return _vertex.getEdges().toArray();
+        }
+        return null;
+    }
+    
     private void resetFlags(){
-        //
+        ArrayList<Vertex<K,T>> _list = map.toArray();
+        for (Vertex<K,T> _vertex:_list){
+            _vertex.resetFlag();
+        }
     }
 
     @Override

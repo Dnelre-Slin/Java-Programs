@@ -4,53 +4,61 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args){
-//        LinkedList<Integer,String> list = new LinkedList<>();
+        LinkedList<Integer,String> list = new LinkedList<>();
+        
+        System.out.println(list.size());
+        list.add(2, "2");
+        System.out.println(list.size());
+        list.add(4, "4");
+        list.add(5, "5");
+        list.add(6, "6");
+        list.add(7, "7");
+        list.add(8, "8");
+        System.out.println(list.size());
+        list.delete(6);
+        System.out.println(list.size());
+        
+        System.out.println(list);
+        
+        LinkedList<Integer,String> list2 = new LinkedList<>();
+        
+        for (String s:list){
+            System.out.println(s);
+        }
+        
+//        Graph<Integer,String> graph = new Graph<>(10);
 //        
-//        System.out.println(list.size());
-//        list.add(2, "t");
-//        System.out.println(list.size());
-//        list.add(4, "4");
-//        list.add(5, "4");
-//        list.add(6, "4");
-//        list.add(7, "4");
-//        list.add(8, "4");
-//        System.out.println(list.size());
-//        list.delete(6);
-//        System.out.println(list.size());
-        
-        Graph<Integer,String> graph = new Graph<>(10);
-        
-        graph.addVertex(1, "One");
-        graph.addVertex(2, "Two");
-        graph.addVertex(3, "Three");
-        graph.addVertex(4, "Four");
-        graph.addVertex(5, "Five");
-        
-        System.out.println(graph);
-        
-        graph.addEdge(1, 2);
-        graph.addEdge(1, 3);
-        graph.addEdge(4, 3);
-        graph.addEdge(4, 5);
-        graph.addEdge(5, 3);
-        
-        System.out.println(graph);
-        
-        graph.deleteEdge(1, 2);
-        graph.deleteEdge(1, 3);
-        graph.deleteEdge(1, 1);
-        
-        System.out.println(graph);
-        
-        graph.addVertex(7, "Seven");
-        graph.addEdge(7, 5);
-        
-        System.out.println(graph);
-        
-        graph.deleteVertex(5);
-        graph.deleteVertex(3);
-        
-        System.out.println(graph);
+//        graph.addVertex(1, "One");
+//        graph.addVertex(2, "Two");
+//        graph.addVertex(3, "Three");
+//        graph.addVertex(4, "Four");
+//        graph.addVertex(5, "Five");
+//        
+//        System.out.println(graph);
+//        
+//        graph.addEdge(1, 2);
+//        graph.addEdge(1, 3);
+//        graph.addEdge(4, 3);
+//        graph.addEdge(4, 5);
+//        graph.addEdge(5, 3);
+//        
+//        System.out.println(graph);
+//        
+//        graph.deleteEdge(1, 2);
+//        graph.deleteEdge(1, 3);
+//        graph.deleteEdge(1, 1);
+//        
+//        System.out.println(graph);
+//        
+//        graph.addVertex(7, "Seven");
+//        graph.addEdge(7, 5);
+//        
+//        System.out.println(graph);
+//        
+//        graph.deleteVertex(5);
+//        graph.deleteVertex(3);
+//        
+//        System.out.println(graph);
 
 //        Hashmap<Integer,String> map = new Hashmap<>(5);
 //    
