@@ -60,6 +60,16 @@ public class LinkedList<K extends Comparable, T> implements Iterable<T>{
         }
         return _array;
     }
+    
+    public Node<K,T> popFirst(){
+        if (first != null){
+            size--;
+            Node<K,T> _node = first;
+            first = first.getNext();
+            return _node;
+        }
+        return null;
+    }
 
     @Override
     public String toString() {
@@ -76,7 +86,7 @@ public class LinkedList<K extends Comparable, T> implements Iterable<T>{
         return new MyIterator(this);
     }
     public class MyIterator<K2 extends Comparable, T2> implements Iterator<T2>{
-        LinkedList<K2, T2> list;
+        private LinkedList<K2, T2> list;
         public MyIterator(LinkedList<K2, T2> _list){
             list = _list;
         }

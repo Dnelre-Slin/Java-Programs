@@ -1,8 +1,10 @@
 package utils;
 
+import extras.Node;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Hashmap <K extends Comparable, T>{
+public class Hashmap <K extends Comparable, T> implements Iterable<T>{
     private LinkedList<K,T>[] array;
     private int size;
     
@@ -75,5 +77,44 @@ public class Hashmap <K extends Comparable, T>{
             }
         }
         return _array;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new MyIterator<>(this);
+    }
+    public class MyIterator<K2 extends Comparable, T2> implements Iterator<T2>{
+        private Hashmap<K2,T2> map = new Hashmap();
+        private int index;
+        private Node<K2,T2> nextNode;
+        public MyIterator(Hashmap<K2,T2> _map){
+            map = _map;
+            index = 0;
+            nextNode = null;
+        }
+        @Override
+        public boolean hasNext() {
+            nextNode = findNext();
+            return (nextNode != null);
+        }
+        @Override
+        public T2 next() {
+            return nextNode.getValue();
+        }
+        private Node<K2,T2> findNext(){
+            while (index < map.array.length){
+                while (index < map.array.length && map.array[index] == null){
+                    index++;
+                }
+                if (index < map.array.length){
+                    Node<K2,T2> _node = map.array[index].popFirst();
+                    if (_node != null){
+                        return _node;
+                    }
+                    index++;
+                }
+            }
+            return null;
+        }
     }
 }
