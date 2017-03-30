@@ -19,8 +19,7 @@ public class Graph <K extends Comparable, T>{
     public void deleteVertex(K _key){
         Vertex<K,T> _vertex = map.delete(_key);
         if (_vertex != null){
-            ArrayList<Vertex<K,T>> _edges = _vertex.getEdges().toArray();
-            for (Vertex<K,T> _edge: _edges){
+            for (Vertex<K,T> _edge: _vertex.getEdges()){
                 _edge.deleteEdge(_key);
             }
         }
@@ -72,10 +71,6 @@ public class Graph <K extends Comparable, T>{
         for (Vertex<K,T> _vertex: map){
             _vertex.resetFlag();
         }
-//        ArrayList<Vertex<K,T>> _list = map.toArray();
-//        for (Vertex<K,T> _vertex:_list){
-//            _vertex.resetFlag();
-//        }
     }
 
     @Override
@@ -91,29 +86,5 @@ public class Graph <K extends Comparable, T>{
             s += '\n';
         }
         return s;
-//        ArrayList<Vertex<K,T>> _array = map.toArray();
-//        String s = "";
-//        for (Vertex<K,T> _list:_array){
-//            s += _list.getCore();
-//            s += ": ";
-//            LinkedList<K,Vertex<K,T>> _edges = _list.getEdges();
-//            if (_edges != null){
-//                s += _edges.toString();
-//            }
-//            s += '\n';
-//        }
-//        return s;
-//        ArrayList<Vertex<K,T>> _array = map.toArray();
-//        String s = "";
-//        for (int i=0; i<_array.size(); i++){
-//            s += _array.get(i).getCore();
-//            s += ": ";
-//            LinkedList<K,Vertex<K,T>> _edges = _array.get(i).getEdges();
-//            if (_edges != null){
-//                s += _edges.toString();
-//            }
-//            s += '\n';
-//        }
-//        return s;
     }
 }
