@@ -6,13 +6,13 @@ public class Node<K extends Comparable, T> {
     private K key;
     private T value;
     private Node<K,T> next;
-    private Node<K,T> last;
+    private Node<K,T> previous;
     private int index;
     
     public Node(K _key, T _value, Node<K,T> _last, int _index){
         key = _key;
         value = _value;
-        last = _last;
+        previous = _last;
         next = null;
         index = _index;
     }
@@ -47,9 +47,9 @@ public class Node<K extends Comparable, T> {
     }
     
     public void delete(){
-        last.next = next;
+        previous.next = next;
         if (next != null){
-            next.last = last;
+            next.previous = previous;
         }
     }
     
@@ -66,6 +66,7 @@ public class Node<K extends Comparable, T> {
     public Node<K,T> getNext(){
         return next;
     }
+
     public ArrayList<T> toArray(ArrayList<T> _array){
         _array.add(value);
         if (next == null){
@@ -81,10 +82,4 @@ public class Node<K extends Comparable, T> {
         }
         return value + " , " + next.toString();
     }
-//    public String keyToString(){
-//        if (next == null){
-//            return key.toString();
-//        }
-//        return key + " , " + next.toString();
-//    }
 }

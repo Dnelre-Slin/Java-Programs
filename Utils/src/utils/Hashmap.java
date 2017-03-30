@@ -67,7 +67,6 @@ public class Hashmap <K extends Comparable, T> implements Iterable<T>{
     }
     public ArrayList toArray(){
         ArrayList<T> _array = new ArrayList<>();
-//        T[] _array = (T[]) new Object[size];
         for (int i=0; i<array.length; i++){
             if (array[i] != null){
                 ArrayList<T> _subArray = array[i].toArray();
@@ -85,53 +84,41 @@ public class Hashmap <K extends Comparable, T> implements Iterable<T>{
     }
     public class MyIterator<K2 extends Comparable, T2> implements Iterator<T2>{
         private Hashmap<K2,T2> map;
-        private int mapIndex;
-        private int listIndex;
+        private int index;
         private Node<K2,T2> nextNode;
         public MyIterator(Hashmap<K2,T2> _map){
             map = _map;
-            mapIndex = 0;
-            listIndex = 0;
+            index = -1;
             nextNode = null;
+        }
+        private void getNextNode(){
+            if (nextNode != null && nextNode.getNext() != null){
+                nextNode = nextNode.getNext();
+            }
+            else{
+                getNextList();
+            }
+        }
+        private void getNextList(){
+            index++;
+            while ((index < map.array.length) && (map.array[index] == null || map.array[index].size() == 0)){
+                index++;
+            }
+            if (index < map.array.length){
+                nextNode = map.array[index].getNodeByIndex(0);
+            }
+            else{
+                nextNode = null;
+            }
         }
         @Override
         public boolean hasNext() {
-            nextNode = findNext();
+            getNextNode();
             return (nextNode != null);
         }
         @Override
         public T2 next() {
             return nextNode.getValue();
         }
-        private Node<K2,T2> findNext(){
-            if (map.array[mapIndex] == null || map.array[mapIndex].size() == 0 || listIndex > map.array[mapIndex].size()){
-                findNextIndex();
-                if (mapIndex > map.array.length){
-                    return null;
-                }
-            }
-            return map.array[mapIndex].getNodeByIndex(listIndex++);
-        }
-        private void findNextIndex(){
-            while (mapIndex < map.array.length && (map.array[mapIndex] == null || map.array[mapIndex].size() == 0)){
-                mapIndex++;
-            }
-            listIndex = 0;
-        }
-//        private Node<K2,T2> findNext(){
-//            while (index < map.array.length){
-//                while (index < map.array.length && map.array[index] == null && map.array[index].size() > 0){
-//                    index++;
-//                }
-//                if (index < map.array.length){
-//                    Node<K2,T2> _node = map.array[index].popFirst();
-//                    if (_node != null){
-//                        return _node;
-//                    }
-//                    index++;
-//                }
-//            }
-//            return null;
-//        }
     }
 }

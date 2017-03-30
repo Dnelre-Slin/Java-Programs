@@ -118,20 +118,4 @@ public class LinkedList<K extends Comparable, T> implements Iterable<T>{
             return _value;
         }
     }
-//    public class MyIterator<K2 extends Comparable, T2> implements Iterator<T2>{
-//        private LinkedList<K2, T2> list;
-//        public MyIterator(LinkedList<K2, T2> _list){
-//            list = _list;
-//        }
-//        @Override
-//        public boolean hasNext() {
-//            return list.first != null;
-//        }
-//        @Override
-//        public T2 next() {
-//            T2 _value = list.first.getValue();
-//            list.first = list.first.getNext();
-//            return _value;
-//        }
-//    }
 }

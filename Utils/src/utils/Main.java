@@ -56,21 +56,22 @@ public class Main {
         
         System.out.println(graph);
 //        
-//        graph.deleteEdge(1, 2);
-//        graph.deleteEdge(1, 3);
-//        graph.deleteEdge(1, 1);
+        graph.deleteEdge(1, 2);
+        graph.deleteEdge(1, 3);
+        graph.deleteEdge(1, 1);
+        
+        System.out.println(graph);
 //        
-//        System.out.println(graph);
+        graph.addVertex(7, "Seven");
+        graph.addEdge(7, 5);
+        
+        System.out.println(graph);
 //        
-//        graph.addVertex(7, "Seven");
-//        graph.addEdge(7, 5);
-//        
-//        System.out.println(graph);
-//        
-//        graph.deleteVertex(5);
-//        graph.deleteVertex(3);
-//        
-//        System.out.println(graph);
+        graph.deleteVertex(5);
+        graph.deleteVertex(3);
+        graph.addEdge(1, 7);
+        
+        System.out.println(graph);
 
 //        Hashmap<Integer,String> map = new Hashmap<>(5);
 //    
