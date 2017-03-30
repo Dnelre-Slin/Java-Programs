@@ -7,17 +7,19 @@ public class Node<K extends Comparable, T> {
     private T value;
     private Node<K,T> next;
     private Node<K,T> last;
+    private int index;
     
-    public Node(K _key, T _value, Node<K,T> _last){
+    public Node(K _key, T _value, Node<K,T> _last, int _index){
         key = _key;
         value = _value;
         last = _last;
         next = null;
+        index = _index;
     }
     
     public void add(K _key, T _value){
         if (next == null){
-            next = new Node<>(_key, _value, this);
+            next = new Node<>(_key, _value, this, index+1);
         }
         else{
             next.add(_key, _value);
@@ -34,10 +36,27 @@ public class Node<K extends Comparable, T> {
         return null;
     }
     
+    public Node<K,T> getByIndex(int _index){
+        if (_index == index){
+            return this;
+        }
+        if (next != null){
+            return next.getByIndex(_index);
+        }
+        return null;
+    }
+    
     public void delete(){
         last.next = next;
         if (next != null){
             next.last = last;
+        }
+    }
+    
+    public void shiftIndex(){
+        index--;
+        if (next != null){
+            next.shiftIndex();
         }
     }
     

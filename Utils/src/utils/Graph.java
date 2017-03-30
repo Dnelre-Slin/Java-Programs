@@ -69,25 +69,51 @@ public class Graph <K extends Comparable, T>{
     }
     
     private void resetFlags(){
-        ArrayList<Vertex<K,T>> _list = map.toArray();
-        for (Vertex<K,T> _vertex:_list){
+        for (Vertex<K,T> _vertex: map){
             _vertex.resetFlag();
         }
+//        ArrayList<Vertex<K,T>> _list = map.toArray();
+//        for (Vertex<K,T> _vertex:_list){
+//            _vertex.resetFlag();
+//        }
     }
 
     @Override
     public String toString() {
-        ArrayList<Vertex<K,T>> _array = map.toArray();
         String s = "";
-        for (int i=0; i<_array.size(); i++){
-            s += _array.get(i).getCore();
-            s += ": ";
-            LinkedList<K,Vertex<K,T>> _edges = _array.get(i).getEdges();
+        
+        for (Vertex<K,T> _vertex: map){
+            s += _vertex.getCore() + ": ";
+            LinkedList<K,Vertex<K,T>> _edges = _vertex.getEdges();
             if (_edges != null){
                 s += _edges.toString();
             }
             s += '\n';
         }
         return s;
+//        ArrayList<Vertex<K,T>> _array = map.toArray();
+//        String s = "";
+//        for (Vertex<K,T> _list:_array){
+//            s += _list.getCore();
+//            s += ": ";
+//            LinkedList<K,Vertex<K,T>> _edges = _list.getEdges();
+//            if (_edges != null){
+//                s += _edges.toString();
+//            }
+//            s += '\n';
+//        }
+//        return s;
+//        ArrayList<Vertex<K,T>> _array = map.toArray();
+//        String s = "";
+//        for (int i=0; i<_array.size(); i++){
+//            s += _array.get(i).getCore();
+//            s += ": ";
+//            LinkedList<K,Vertex<K,T>> _edges = _array.get(i).getEdges();
+//            if (_edges != null){
+//                s += _edges.toString();
+//            }
+//            s += '\n';
+//        }
+//        return s;
     }
 }
