@@ -1,5 +1,6 @@
 package utils;
 
+import extras.Vertex;
 import java.util.ArrayList;
 
 public class Main {
@@ -67,11 +68,33 @@ public class Main {
         
         System.out.println(graph);
 //        
-        graph.deleteVertex(5);
-        graph.deleteVertex(3);
+//        graph.deleteVertex(5);
+//        graph.deleteVertex(3);
         graph.addEdge(1, 7);
         
         System.out.println(graph);
+        
+        ArrayList<Vertex<Integer,String>> _list = graph.depthFirst(3, 7);
+        
+        for (Vertex<Integer,String> _vertex:_list){
+            System.out.print(_vertex + "   ");
+        }
+        System.out.println("\n");
+        
+        _list = graph.depthFirst(3, 5);
+        
+        for (Vertex<Integer,String> _vertex:_list){
+            System.out.print(_vertex + "   ");
+        }
+        System.out.println("\n");
+        
+        ArrayList<Vertex<Integer,String>> _list2 = graph.breadthFirst(3, 5);
+        
+        for (Vertex<Integer,String> _vertex:_list2){
+            System.out.print(_vertex + "   ");
+        }
+        System.out.println("\n");
+
 
 //        Hashmap<Integer,String> map = new Hashmap<>(5);
 //    

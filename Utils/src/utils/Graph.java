@@ -14,7 +14,7 @@ public class Graph <K extends Comparable, T>{
     }
     
     public void addVertex(K _key, T _core){
-        map.add(_key, new Vertex<>(_core));
+        map.add(_key, new Vertex<>(_key, _core));
     }
     public void deleteVertex(K _key){
         Vertex<K,T> _vertex = map.delete(_key);
@@ -65,6 +65,27 @@ public class Graph <K extends Comparable, T>{
             return _vertex.getEdges().toArray();
         }
         return null;
+    }
+    
+    public ArrayList<Vertex<K,T>> depthFirst(K _startKey, K _goalKey){
+        ArrayList<Vertex<K,T>> _path = new ArrayList<>();
+        Vertex<K,T> _startVertex = map.get(_startKey);
+        if (_startVertex != null){
+            _startVertex.depthFirst(_goalKey, _path);
+        }
+        resetFlags();
+        return _path;
+    }
+    
+    public ArrayList<Vertex<K,T>> breadthFirst(K _startKey, K _goalKey){
+        ArrayList<Vertex<K,T>> _path = new ArrayList<>();
+        ArrayList<Vertex<K,T>> _queue = new ArrayList<>();
+        Vertex<K,T> _startVertex = map.get(_startKey);
+        if (_startVertex != null){
+            _path = _startVertex.breadthFirst(_goalKey, _path, _queue);
+        }
+        resetFlags();
+        return _path;
     }
     
     private void resetFlags(){
