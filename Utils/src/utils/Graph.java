@@ -2,7 +2,8 @@ package utils;
 
 import extras.Edge;
 import extras.Vertex;
-import extras.VertexPath;
+import extras.VertexEdgeStruct;
+import extras.VertexPathStruct;
 import java.util.ArrayList;
 
 public class Graph <K extends Comparable<K>, T>{
@@ -85,7 +86,7 @@ public class Graph <K extends Comparable<K>, T>{
     
     public ArrayList<Vertex<K,T>> breadthFirst(K _startKey, K _goalKey){
         ArrayList<Vertex<K,T>> _path = new ArrayList<>();
-        ArrayList<VertexPath<K,T>> _queue = new ArrayList<>();
+        ArrayList<VertexPathStruct<K,T>> _queue = new ArrayList<>();
         Vertex<K,T> _startVertex = map.get(_startKey);
         if (_startVertex != null){
             _path.add(_startVertex);
@@ -93,6 +94,45 @@ public class Graph <K extends Comparable<K>, T>{
         }
         resetFlags();
         return _path;
+    }
+    
+    private void addToQueue(ArrayList<VertexEdgeStruct<K,T>> _queue, Vertex<K,T> _vertex){
+        _vertex.setVisited(true);
+        for (Edge<K,T> _edge : _vertex.getEdges()){
+            if (!_edge.getVertex().isVisited()){
+                for (int i=0; i<=_queue.size(); i++){ //Makes sure that _queue is always sorted.
+                    if (i == _queue.size()){ // Adds to end of arraylist, if it is the biggest element.
+                        _queue.add(new VertexEdgeStruct<>(_vertex, _edge));
+                        break;
+                    }
+                    if (_edge.getWeight() < _queue.get(i).edge.getWeight()){
+                        _queue.add(i, new VertexEdgeStruct<>(_vertex, _edge));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    public void prim(Graph<K,T> _mst, Vertex<K,T> _startVertex){
+        ArrayList<VertexEdgeStruct<K,T>> _queue = new ArrayList<>();
+        addToQueue(_queue, _startVertex);
+        _mst.addVertex(_startVertex.getKey(), _startVertex.getCore());
+        while (_queue.size() > 0){
+            VertexEdgeStruct<K,T> _struct = _queue.remove(0); //Pop first element.
+            if (!_struct.edge.getVertex().isVisited()){
+                _mst.addVertex(_struct.edge.getVertex().getKey(), _struct.edge.getVertex().getCore());
+                _mst.addEdge(_struct.vertex.getKey(), _struct.edge.getVertex().getKey(), _struct.edge.getWeight());
+            }
+            addToQueue(_queue, _struct.edge.getVertex());
+        }
+    }
+    public Graph<K,T> getMst(K _startVertexKey){
+        Graph<K,T> _mst = new Graph<>();
+        Vertex<K,T> _startVertex = map.get(_startVertexKey);
+        if (_startVertex != null){
+            prim(_mst, _startVertex);
+        }
+        return _mst;
     }
     
     private void resetFlags(){

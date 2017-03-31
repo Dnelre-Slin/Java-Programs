@@ -52,7 +52,7 @@ public class Vertex <K extends Comparable<K>, T>{
         return false;
     }
     
-    public ArrayList<Vertex<K,T>> breadthFirst(K _goalKey, ArrayList<Vertex<K,T>> _thisPath, ArrayList<VertexPath<K,T>> _queue){
+    public ArrayList<Vertex<K,T>> breadthFirst(K _goalKey, ArrayList<Vertex<K,T>> _thisPath, ArrayList<VertexPathStruct<K,T>> _queue){
         visited = true;
         if (_goalKey.compareTo(key) == 0){
             return _thisPath;
@@ -64,11 +64,11 @@ public class Vertex <K extends Comparable<K>, T>{
                 ArrayList<Vertex<K,T>> _newPath = new ArrayList<>();
                 _newPath.addAll(_thisPath);
                 _newPath.add(_vertex);
-                _queue.add(new VertexPath(_vertex,_newPath));
+                _queue.add(new VertexPathStruct(_vertex,_newPath));
             }
         }
         if (_queue.get(0) != null){
-            VertexPath<K,T> _next = _queue.remove(0);
+            VertexPathStruct<K,T> _next = _queue.remove(0);
             return _next.vertex.breadthFirst(_goalKey, _next.path, _queue);
         }
         return new ArrayList<>();
@@ -77,9 +77,19 @@ public class Vertex <K extends Comparable<K>, T>{
     public T getCore(){
         return core;
     }
+    public K getKey(){
+        return key;
+    }
     
     public void resetFlag(){
         visited = false;
+    }
+    
+    public void setVisited(boolean _visited){
+        visited = _visited;
+    }
+    public boolean isVisited(){
+        return visited;
     }
 
     @Override

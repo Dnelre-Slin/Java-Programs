@@ -95,6 +95,10 @@ public class Main {
             System.out.print(_vertex + "   ");
         }
         System.out.println("\n");
+        
+        Graph<Integer,String> mst = graph.getMst(1);
+        
+        System.out.println(mst);
 
 
 //        Hashmap<Integer,String> map = new Hashmap<>(5);
