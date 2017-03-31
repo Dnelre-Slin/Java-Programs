@@ -52,22 +52,23 @@ public class Vertex <K extends Comparable, T>{
         return false;
     }
     
-    public ArrayList<Vertex<K,T>> breadthFirst(K _goalKey, ArrayList<Vertex<K,T>> _path, ArrayList<Vertex<K,T>> _queue){
+    public ArrayList<Vertex<K,T>> breadthFirst(K _goalKey, ArrayList<Vertex<K,T>> _thisPath, ArrayList<VertexPath<K,T>> _queue){
         visited = true;
-        ArrayList<Vertex<K,T>> _newPath = new ArrayList<>();
-        _newPath.addAll(_path);
-        _newPath.add(this);
-        if (_goalKey.compareTo(key) == 0){;
-            return _newPath;
+        if (_goalKey.compareTo(key) == 0){
+            return _thisPath;
         }
         for (Vertex<K,T> _vertex:edges){
             if (!_vertex.visited){
                 _vertex.visited = true;
-                _queue.add(_vertex);
+                ArrayList<Vertex<K,T>> _newPath = new ArrayList<>();
+                _newPath.addAll(_thisPath);
+                _newPath.add(_vertex);
+                _queue.add(new VertexPath(_vertex,_newPath));
             }
         }
         if (_queue.get(0) != null){
-            return _queue.remove(0).breadthFirst(_goalKey, _newPath, _queue);
+            VertexPath<K,T> _next = _queue.remove(0);
+            return _next.vertex.breadthFirst(_goalKey, _next.path, _queue);
         }
         return new ArrayList<>();
     }

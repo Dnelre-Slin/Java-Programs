@@ -1,6 +1,7 @@
 package utils;
 
 import extras.Vertex;
+import extras.VertexPath;
 import java.util.ArrayList;
 
 public class Graph <K extends Comparable, T>{
@@ -79,14 +80,36 @@ public class Graph <K extends Comparable, T>{
     
     public ArrayList<Vertex<K,T>> breadthFirst(K _startKey, K _goalKey){
         ArrayList<Vertex<K,T>> _path = new ArrayList<>();
-        ArrayList<Vertex<K,T>> _queue = new ArrayList<>();
+        ArrayList<VertexPath<K,T>> _queue = new ArrayList<>();
+//        ArrayList<Vertex<K,T>> _path = new ArrayList<>();
+//        ArrayList<ArrayList<Vertex<K,T>>> _paths = new ArrayList<>();
+//        ArrayList<Vertex<K,T>> _queue = new ArrayList<>();
         Vertex<K,T> _startVertex = map.get(_startKey);
         if (_startVertex != null){
+            _path.add(_startVertex);
             _path = _startVertex.breadthFirst(_goalKey, _path, _queue);
+//            ArrayList<Vertex<K,T>> _list = new ArrayList<>();
+//            _list.add(_startVertex);
+//            _paths.add(_list);
+//            _path = _startVertex.breadthFirst(_goalKey, _paths, _queue);
         }
         resetFlags();
         return _path;
     }
+//    public ArrayList<Vertex<K,T>> breadthFirst(K _startKey, K _goalKey){
+//        ArrayList<Vertex<K,T>> _path = new ArrayList<>();
+//        ArrayList<ArrayList<Vertex<K,T>>> _paths = new ArrayList<>();
+//        ArrayList<Vertex<K,T>> _queue = new ArrayList<>();
+//        Vertex<K,T> _startVertex = map.get(_startKey);
+//        if (_startVertex != null){
+//            ArrayList<Vertex<K,T>> _list = new ArrayList<>();
+//            _list.add(_startVertex);
+//            _paths.add(_list);
+//            _path = _startVertex.breadthFirst(_goalKey, _paths, _queue);
+//        }
+//        resetFlags();
+//        return _path;
+//    }
     
     private void resetFlags(){
         for (Vertex<K,T> _vertex: map){

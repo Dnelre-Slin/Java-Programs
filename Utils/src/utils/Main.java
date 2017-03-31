@@ -71,6 +71,7 @@ public class Main {
 //        graph.deleteVertex(5);
 //        graph.deleteVertex(3);
         graph.addEdge(1, 7);
+        graph.addEdge(3, 7);
         
         System.out.println(graph);
         
@@ -81,14 +82,14 @@ public class Main {
         }
         System.out.println("\n");
         
-        _list = graph.depthFirst(3, 5);
+        _list = graph.depthFirst(5, 7);
         
         for (Vertex<Integer,String> _vertex:_list){
             System.out.print(_vertex + "   ");
         }
         System.out.println("\n");
         
-        ArrayList<Vertex<Integer,String>> _list2 = graph.breadthFirst(3, 5);
+        ArrayList<Vertex<Integer,String>> _list2 = graph.breadthFirst(5, 7);
         
         for (Vertex<Integer,String> _vertex:_list2){
             System.out.print(_vertex + "   ");
