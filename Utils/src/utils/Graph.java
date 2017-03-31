@@ -117,7 +117,7 @@ public class Graph <K extends Comparable<K>, T>{
         ArrayList<VertexEdgeStruct<K,T>> _queue = new ArrayList<>();
         addToQueue(_queue, _startVertex);
         _mst.addVertex(_startVertex.getKey(), _startVertex.getCore());
-        while (_queue.size() > 0){
+        while (!_queue.isEmpty()){
             VertexEdgeStruct<K,T> _struct = _queue.remove(0); //Pop first element.
             if (!_struct.edge.getVertex().isVisited()){
                 _mst.addVertex(_struct.edge.getVertex().getKey(), _struct.edge.getVertex().getCore());
@@ -132,6 +132,7 @@ public class Graph <K extends Comparable<K>, T>{
         if (_startVertex != null){
             prim(_mst, _startVertex);
         }
+        resetFlags();
         return _mst;
     }
     
