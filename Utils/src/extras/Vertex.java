@@ -3,10 +3,10 @@ package extras;
 import java.util.ArrayList;
 import utils.LinkedList;
 
-public class Vertex <K extends Comparable, T>{
+public class Vertex <K extends Comparable<K>, T>{
     protected T core;
     protected K key;
-    protected LinkedList<K,Vertex<K,T>> edges;
+    protected LinkedList<K,Edge<K,T>> edges;
     protected boolean visited;
     
     public Vertex(K _key, T _core){
@@ -16,9 +16,9 @@ public class Vertex <K extends Comparable, T>{
         visited = false;
     }
     
-    public void addEdge(K _key, Vertex<K,T> _edge){
+    public void addEdge(K _key, Vertex<K,T> _edge, int _weight){
         if (edges.get(_key) == null){// Check if this edge already exists.
-            edges.add(_key, _edge);
+            edges.add(_key, new Edge(_edge, _weight));
         }
     }
     
@@ -26,11 +26,11 @@ public class Vertex <K extends Comparable, T>{
         edges.delete(_key);
     }
     
-    public Vertex<K,T> getEdge(K _key){
+    public Edge<K,T> getEdge(K _key){
         return edges.get(_key);
     }
     
-    public LinkedList<K,Vertex<K,T>> getEdges(){
+    public LinkedList<K,Edge<K,T>> getEdges(){
         return edges;
     }
     
@@ -41,7 +41,7 @@ public class Vertex <K extends Comparable, T>{
             return true;
         }
         for (int i=0; i<edges.size(); i++){
-            Vertex<K,T> _vertex = edges.getByIndex(i);
+            Vertex<K,T> _vertex = edges.getByIndex(i).getVertex();
             if (!_vertex.visited){
                 if (_vertex.depthFirst(_goalKey, _path)){
                     _path.add(0,this);
@@ -57,7 +57,8 @@ public class Vertex <K extends Comparable, T>{
         if (_goalKey.compareTo(key) == 0){
             return _thisPath;
         }
-        for (Vertex<K,T> _vertex:edges){
+        for (Edge<K,T> _edge:edges){
+            Vertex<K,T> _vertex = _edge.getVertex();
             if (!_vertex.visited){
                 _vertex.visited = true;
                 ArrayList<Vertex<K,T>> _newPath = new ArrayList<>();

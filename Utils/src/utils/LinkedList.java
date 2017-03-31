@@ -4,7 +4,7 @@ import extras.Node;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class LinkedList<K extends Comparable, T> implements Iterable<T>{
+public class LinkedList<K extends Comparable<K>, T> implements Iterable<T>{
     private Node<K,T> first;
     private int size;
     
@@ -102,7 +102,7 @@ public class LinkedList<K extends Comparable, T> implements Iterable<T>{
     public Iterator<T> iterator() {
         return new MyIterator(first);
     }
-    public class MyIterator<K2 extends Comparable, T2> implements Iterator<T2>{
+    public class MyIterator<K2 extends Comparable<K2>, T2> implements Iterator<T2>{
         private Node<K2,T2> node;
         public MyIterator(Node<K2, T2> _node){
             node = _node;

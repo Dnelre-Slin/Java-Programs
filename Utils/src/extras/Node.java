@@ -2,7 +2,7 @@ package extras;
 
 import java.util.ArrayList;
 
-public class Node<K extends Comparable, T> {
+public class Node<K extends Comparable<K>, T> {
     private K key;
     private T value;
     private Node<K,T> next;

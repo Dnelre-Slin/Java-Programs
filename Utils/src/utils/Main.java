@@ -49,11 +49,11 @@ public class Main {
         
         System.out.println(graph);
         
-        graph.addEdge(1, 2);
-        graph.addEdge(1, 3);
-        graph.addEdge(4, 3);
-        graph.addEdge(4, 5);
-        graph.addEdge(5, 3);
+        graph.addEdge(1, 2, 4);
+        graph.addEdge(1, 3, 7);
+        graph.addEdge(4, 3, 1);
+        graph.addEdge(4, 5, 2);
+        graph.addEdge(5, 3, 8);
         
         System.out.println(graph);
 //        
@@ -64,14 +64,14 @@ public class Main {
         System.out.println(graph);
 //        
         graph.addVertex(7, "Seven");
-        graph.addEdge(7, 5);
+        graph.addEdge(7, 5, 12);
         
         System.out.println(graph);
 //        
 //        graph.deleteVertex(5);
 //        graph.deleteVertex(3);
-        graph.addEdge(1, 7);
-        graph.addEdge(3, 7);
+        graph.addEdge(1, 7, 4);
+        graph.addEdge(3, 7, 88);
         
         System.out.println(graph);
         

@@ -4,7 +4,7 @@ import extras.Node;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Hashmap <K extends Comparable, T> implements Iterable<T>{
+public class Hashmap <K extends Comparable<K>, T> implements Iterable<T>{
     private LinkedList<K,T>[] array;
     private int size;
     
@@ -82,7 +82,7 @@ public class Hashmap <K extends Comparable, T> implements Iterable<T>{
     public Iterator<T> iterator() {
         return new MyIterator<>(this);
     }
-    public class MyIterator<K2 extends Comparable, T2> implements Iterator<T2>{
+    public class MyIterator<K2 extends Comparable<K2>, T2> implements Iterator<T2>{
         private Hashmap<K2,T2> map;
         private int index;
         private Node<K2,T2> nextNode;

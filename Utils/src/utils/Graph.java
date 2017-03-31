@@ -1,10 +1,11 @@
 package utils;
 
+import extras.Edge;
 import extras.Vertex;
 import extras.VertexPath;
 import java.util.ArrayList;
 
-public class Graph <K extends Comparable, T>{
+public class Graph <K extends Comparable<K>, T>{
     private Hashmap<K,Vertex<K,T>> map;
     
     public Graph(int size){
@@ -20,23 +21,27 @@ public class Graph <K extends Comparable, T>{
     public void deleteVertex(K _key){
         Vertex<K,T> _vertex = map.delete(_key);
         if (_vertex != null){
-            for (Vertex<K,T> _edge: _vertex.getEdges()){
-                _edge.deleteEdge(_key);
+            for (Edge<K,T> _edge: _vertex.getEdges()){
+                Vertex<K,T> _neighborVertex = _edge.getVertex();
+                _neighborVertex.deleteEdge(_key);
             }
         }
     }
     
-    public void addEdge(K _key1, K _key2){
+    public void addEdge(K _key1, K _key2, int _weight){
         if (_key1 != _key2){
-            doAddEdge(_key1, _key2);
-            doAddEdge(_key2, _key1);
+            doAddEdge(_key1, _key2, _weight);
+            doAddEdge(_key2, _key1, _weight);
         }
     }
-    private void doAddEdge(K _vertexKey, K _edgeKey){
+    public void addEdge(K _key1, K _key2){
+        addEdge(_key1, _key2, 0);
+    }
+    private void doAddEdge(K _vertexKey, K _neighborKey, int _weight){
         Vertex<K,T> _vertex = map.get(_vertexKey);
-        Vertex<K,T> _edge = map.get(_edgeKey);
-        if (_vertex != null && _edge != null){
-            _vertex.addEdge(_edgeKey, _edge);
+        Vertex<K,T> _neighbor = map.get(_neighborKey);
+        if (_vertex != null && _neighbor != null){
+            _vertex.addEdge(_neighborKey, _neighbor, _weight);
         }
     }
     
@@ -46,10 +51,10 @@ public class Graph <K extends Comparable, T>{
             doDeleteEdge(_key2, _key1);            
         }
     }
-    private void doDeleteEdge(K _vertexKey, K _edgeKey){
+    private void doDeleteEdge(K _vertexKey, K _neighborKey){
         Vertex<K,T> _vertex = map.get(_vertexKey);
         if (_vertex != null){
-            _vertex.deleteEdge(_edgeKey);
+            _vertex.deleteEdge(_neighborKey);
         }
     }
     
@@ -60,7 +65,7 @@ public class Graph <K extends Comparable, T>{
         }
         return false;
     }
-    public ArrayList<Vertex<K,T>> getNeighbors(K _key){
+    public ArrayList<Edge<K,T>> getNeighbors(K _key){
         Vertex<K,T> _vertex = map.get(_key);
         if (_vertex != null){
             return _vertex.getEdges().toArray();
@@ -81,35 +86,14 @@ public class Graph <K extends Comparable, T>{
     public ArrayList<Vertex<K,T>> breadthFirst(K _startKey, K _goalKey){
         ArrayList<Vertex<K,T>> _path = new ArrayList<>();
         ArrayList<VertexPath<K,T>> _queue = new ArrayList<>();
-//        ArrayList<Vertex<K,T>> _path = new ArrayList<>();
-//        ArrayList<ArrayList<Vertex<K,T>>> _paths = new ArrayList<>();
-//        ArrayList<Vertex<K,T>> _queue = new ArrayList<>();
         Vertex<K,T> _startVertex = map.get(_startKey);
         if (_startVertex != null){
             _path.add(_startVertex);
             _path = _startVertex.breadthFirst(_goalKey, _path, _queue);
-//            ArrayList<Vertex<K,T>> _list = new ArrayList<>();
-//            _list.add(_startVertex);
-//            _paths.add(_list);
-//            _path = _startVertex.breadthFirst(_goalKey, _paths, _queue);
         }
         resetFlags();
         return _path;
     }
-//    public ArrayList<Vertex<K,T>> breadthFirst(K _startKey, K _goalKey){
-//        ArrayList<Vertex<K,T>> _path = new ArrayList<>();
-//        ArrayList<ArrayList<Vertex<K,T>>> _paths = new ArrayList<>();
-//        ArrayList<Vertex<K,T>> _queue = new ArrayList<>();
-//        Vertex<K,T> _startVertex = map.get(_startKey);
-//        if (_startVertex != null){
-//            ArrayList<Vertex<K,T>> _list = new ArrayList<>();
-//            _list.add(_startVertex);
-//            _paths.add(_list);
-//            _path = _startVertex.breadthFirst(_goalKey, _paths, _queue);
-//        }
-//        resetFlags();
-//        return _path;
-//    }
     
     private void resetFlags(){
         for (Vertex<K,T> _vertex: map){
@@ -123,7 +107,7 @@ public class Graph <K extends Comparable, T>{
         
         for (Vertex<K,T> _vertex: map){
             s += _vertex.getCore() + ": ";
-            LinkedList<K,Vertex<K,T>> _edges = _vertex.getEdges();
+            LinkedList<K,Edge<K,T>> _edges = _vertex.getEdges();
             if (_edges != null){
                 s += _edges.toString();
             }
