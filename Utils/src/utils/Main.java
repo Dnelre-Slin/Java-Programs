@@ -1,6 +1,7 @@
 package utils;
 
 import extras.Vertex;
+import guiframe.GUI;
 import java.util.ArrayList;
 
 public class Main {
@@ -46,6 +47,9 @@ public class Main {
         graph.addVertex(3, "Three");
         graph.addVertex(4, "Four");
         graph.addVertex(5, "Five");
+        graph.addVertex(6, "Six");
+        graph.addVertex(7, "Seven");
+        graph.addVertex(8, "Eight");
         
         System.out.println(graph);
         
@@ -54,6 +58,10 @@ public class Main {
         graph.addEdge(4, 3, 1);
         graph.addEdge(4, 5, 2);
         graph.addEdge(5, 3, 8);
+        
+        graph.addEdge(6, 2, 13);
+        graph.addEdge(6, 8, 6);
+        graph.addEdge(8, 3, 11);
         
         System.out.println(graph);
 //        
@@ -99,6 +107,12 @@ public class Main {
         Graph<Integer,String> mst = graph.getMst(1);
         
         System.out.println(mst);
+        
+        GUI gui = new GUI();
+        
+//        graph.drawGraph(gui);
+        
+        mst.drawGraph(gui);
 
 
 //        Hashmap<Integer,String> map = new Hashmap<>(5);

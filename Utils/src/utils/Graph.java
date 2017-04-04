@@ -4,6 +4,9 @@ import extras.Edge;
 import extras.Vertex;
 import extras.VertexEdgeStruct;
 import extras.VertexPathStruct;
+import guiframe.GUI;
+import guiframe.Pos;
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Graph <K extends Comparable<K>, T>{
@@ -140,6 +143,48 @@ public class Graph <K extends Comparable<K>, T>{
         for (Vertex<K,T> _vertex: map){
             _vertex.resetFlag();
         }
+    }
+    
+    public void drawGraph(GUI gui){
+        // Size of ovals.
+        int _height = 60;
+        int _width = 60;
+        //
+        LinkedList<K,Pos> _positions = getPosList();
+        
+        for (Vertex<K,T> _vertex : map){
+            //System.out.println("Node: " + _vertex.getKey() + "   [ " + _positions.get(_vertex.getKey()).x + " , " + _positions.get(_vertex.getKey()).y + " ]");
+            Pos _pos = _positions.get(_vertex.getKey());
+            gui.draw("fillOval", _pos.x, _pos.y, _height, _width, Color.yellow);
+            gui.drawString(_vertex.getCore().toString(), _pos.x+_height/6, _pos.y+_height/2);
+            for (Edge<K,T> _edge : _vertex.getEdges()){
+                Pos _posNeighbor = _positions.get(_edge.getVertex().getKey());
+                if (_posNeighbor != null){
+                    gui.drawLine(_pos.x+_height/2, _pos.y+_width/2, _posNeighbor.x+_height/2, _posNeighbor.y+_width/2, 2);
+                    gui.drawString(Integer.toString(_edge.getWeight()), (((_pos.x+_height/2)+(_posNeighbor.x+_height/2))/2), (((_pos.y+_width/2)+(_posNeighbor.y+_width/2))/2), Color.BLUE);
+                }
+            }
+        }
+    }
+    //Make a linkedlist of positions for each vertex. Used to draw graph graphicly.
+    private LinkedList<K,Pos> getPosList(){
+        // Values for spacing and positions that will be used.
+        int _xSpace = 120;
+        int _ySpace = 120;
+        int _totalWidth = 5;
+        Pos _pos = new Pos(_xSpace*2,_ySpace);
+        //
+        LinkedList<K,Pos> _positions = new LinkedList<>();
+        for (Vertex<K,T> _vertex : map){
+            _positions.add(_vertex.getKey(), new Pos(_pos.x, _pos.y));
+            _pos.x += _xSpace; //Increment pos.x with xSpace,
+            _pos.y += _ySpace/3;//and pos.y with a third of ySpace.
+            if (_pos.x > _xSpace*_totalWidth){ //When max width is reached, reset pos.x and set pos.y to the next line.
+                _pos.x = _xSpace*2;
+                _pos.y -= _ySpace*(_totalWidth/2 - 2);
+            }
+        }
+        return _positions;
     }
 
     @Override
