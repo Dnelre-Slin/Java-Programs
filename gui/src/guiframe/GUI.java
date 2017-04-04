@@ -11,24 +11,24 @@ import javax.swing.JFrame;
 
 
 public class GUI extends JComponent implements KeyListener{
-    JFrame main_frame;
+    private JFrame main_frame;
     
     private final int shape = 0;
     private final int line = 1;
     private final int string = 2;
     
-    Queue<Integer> order_q;
-    Queue<PaintType> paint_q;
-    Queue<KeyEvent> input_q;
-    Queue<PaintText> text_q;
-    Queue<PaintLine> line_q;
-    int x = 20;
-    int y = 20;
+    private Queue<Integer> order_q;
+    private Queue<PaintType> paint_q;
+    private Queue<KeyEvent> input_q;
+    private Queue<PaintText> text_q;
+    private Queue<PaintLine> line_q;
+    private int x = 20;
+    private int y = 20;
     
-    boolean is_painting;
-    int paint_count;
+    private boolean is_painting;
+    private int paint_count;
     
-    boolean new_painting;
+    private boolean new_painting;
     
     public GUI(JFrame new_frame){
         if (new_frame == null){

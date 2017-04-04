@@ -3,8 +3,8 @@ package guiframe;
 import java.awt.Color;
 
 public class PaintText {
-    String text;
-    int x;
-    int y;
-    Color color;
+    public String text;
+    public int x;
+    public int y;
+    public Color color;
 }
