@@ -3,6 +3,8 @@ package utils;
 import extras.Vertex;
 import guiframe.GUI;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args){
@@ -110,9 +112,42 @@ public class Main {
         
         GUI gui = new GUI();
         
-//        graph.drawGraph(gui);
+        graph.drawGraph(gui);
         
-        mst.drawGraph(gui);
+        //Running gui.
+        
+        graph.drawGraph(gui);
+        gui.drawString("Press Space to swap between MST and normal graph.", 200, 550);
+        gui.repaint();
+        
+        boolean nextDrawMst = true;
+        boolean runProgram = true;
+        while (runProgram){
+            while (gui.hasInput()){
+                switch(gui.getInput().getKeyCode()){
+                    case 32: //Space pressed.
+                        if (nextDrawMst){
+                            mst.drawGraph(gui);
+                            nextDrawMst = false;
+                        }else{
+                            graph.drawGraph(gui);
+                            nextDrawMst = true;
+                        }
+                        gui.drawString("Press Space to swap between MST and normal graph.", 200, 550);
+                        gui.repaint();
+                        break;
+                }
+            }
+            
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+            }
+        }
+        
+        //End of gui.
+        
+//        mst.drawGraph(gui);
 
 
 //        Hashmap<Integer,String> map = new Hashmap<>(5);

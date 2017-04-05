@@ -17,7 +17,7 @@ public class Hashmap <K extends Comparable<K>, T> implements Iterable<T>{
     }
     
     public void add(K _key, T _value){
-        int _index = getIndex(_key);
+        int _index = getIndex(_key); //Get index by hashcode.
         if (array[_index] == null){
             array[_index] = new LinkedList<>();
         }
@@ -26,7 +26,7 @@ public class Hashmap <K extends Comparable<K>, T> implements Iterable<T>{
     }
     
     public T get(K _key){
-        int _index = getIndex(_key);
+        int _index = getIndex(_key); //Get index by hashcode.
         if (array[_index] != null){
             return array[_index].get(_key);
         }
@@ -34,7 +34,7 @@ public class Hashmap <K extends Comparable<K>, T> implements Iterable<T>{
     }
     
     public T delete(K _key){
-        int _index = getIndex(_key);
+        int _index = getIndex(_key); //Get index by hashcode.
         if (array[_index] != null){
             T _value = array[_index].delete(_key);
             if (_value != null){
@@ -58,14 +58,14 @@ public class Hashmap <K extends Comparable<K>, T> implements Iterable<T>{
         return s;
     }
     
-    private int getIndex(K _key){
+    private int getIndex(K _key){ //Method to get index by hashcode of key.
         return (Math.abs((_key.hashCode())%array.length));
     }
     
     public int size(){
         return size;
     }
-    public ArrayList toArray(){
+    public ArrayList toArray(){ //Makes a copy of the hashmap, and puts it in an arraylist.
         ArrayList<T> _array = new ArrayList<>();
         for (int i=0; i<array.length; i++){
             if (array[i] != null){
@@ -78,7 +78,7 @@ public class Hashmap <K extends Comparable<K>, T> implements Iterable<T>{
         return _array;
     }
 
-    @Override
+    @Override //Used to iterate through the hashmap.
     public Iterator<T> iterator() {
         return new MyIterator<>(this);
     }
@@ -91,33 +91,34 @@ public class Hashmap <K extends Comparable<K>, T> implements Iterable<T>{
             index = -1;
             nextNode = null;
         }
-        private void getNextNode(){
-            if (nextNode != null && nextNode.getNext() != null){
+        private void getNextNode(){ //Gets next node in the linkedlist of a specific index of the hashmap's array.
+            if (nextNode != null && nextNode.getNext() != null){ //If nextnode has next.
                 nextNode = nextNode.getNext();
             }
-            else{
+            else{ //Else, get next index of array.
                 getNextList();
             }
         }
         private void getNextList(){
             index++;
+            //Search for next index that has a non-empty linkedlist.
             while ((index < map.array.length) && (map.array[index] == null || map.array[index].size() == 0)){
                 index++;
             }
-            if (index < map.array.length){
+            if (index < map.array.length){ //If an index is found before the index is out of bounds.
                 nextNode = map.array[index].getNodeByIndex(0);
             }
-            else{
+            else{ //No more elements to iterate.
                 nextNode = null;
             }
         }
         @Override
-        public boolean hasNext() {
+        public boolean hasNext() { //Checks if there is more to iterate through.
             getNextNode();
-            return (nextNode != null);
+            return (nextNode != null); 
         }
         @Override
-        public T2 next() {
+        public T2 next() { //Iterates through the next value.
             return nextNode.getValue();
         }
     }

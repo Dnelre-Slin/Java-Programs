@@ -110,7 +110,7 @@ public class GUI extends JComponent implements KeyListener{
     public KeyEvent getInput(){
         return input_q.dequeue();
     }
-    public boolean checkInput(){
+    public boolean hasInput(){
         return !input_q.isEmpty();
     }
     public void flushInput(){

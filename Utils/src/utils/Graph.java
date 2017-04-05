@@ -10,92 +10,93 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Graph <K extends Comparable<K>, T>{
-    private Hashmap<K,Vertex<K,T>> map;
+    private Hashmap<K,Vertex<K,T>> map; //Stores the graph in a hashmap.
     
     public Graph(int size){
         map = new Hashmap<>(size);
     }
-    public Graph(){
+    public Graph(){ //Hashmap will default to size 20, if no size is passed to constructor.
         map = new Hashmap<>();
     }
     
     public void addVertex(K _key, T _core){
-        map.add(_key, new Vertex<>(_key, _core));
+        map.add(_key, new Vertex<>(_key, _core)); //Adds vertex to graph.
     }
     public void deleteVertex(K _key){
-        Vertex<K,T> _vertex = map.delete(_key);
-        if (_vertex != null){
-            for (Edge<K,T> _edge: _vertex.getEdges()){
-                Vertex<K,T> _neighborVertex = _edge.getVertex();
-                _neighborVertex.deleteEdge(_key);
+        Vertex<K,T> _vertex = map.delete(_key); //Deletes vertex from graph.
+        if (_vertex != null){ //If something was deleted, 
+            for (Edge<K,T> _edge: _vertex.getEdges()){ //delete every edge to this vertex as well.
+                Vertex<K,T> _neighborVertex = _edge.getVertex(); //Get neighbor edges,
+                _neighborVertex.deleteEdge(_key); //and delete this node from their edges.
             }
         }
     }
     
     public void addEdge(K _key1, K _key2, int _weight){
-        if (_key1 != _key2){
-            doAddEdge(_key1, _key2, _weight);
-            doAddEdge(_key2, _key1, _weight);
+        if (_key1 != _key2){ //Key can't be the same, or the vertex would make a edge to itself.
+            doAddEdge(_key1, _key2, _weight); //Do the add edge on both vertices,
+            doAddEdge(_key2, _key1, _weight); //since it is an undirected graph.
         }
     }
     public void addEdge(K _key1, K _key2){
-        addEdge(_key1, _key2, 0);
+        addEdge(_key1, _key2, 0); //Weight defaults to 0, if no weight is passed.
     }
     private void doAddEdge(K _vertexKey, K _neighborKey, int _weight){
-        Vertex<K,T> _vertex = map.get(_vertexKey);
+        Vertex<K,T> _vertex = map.get(_vertexKey); //Find both edges.
         Vertex<K,T> _neighbor = map.get(_neighborKey);
-        if (_vertex != null && _neighbor != null){
-            _vertex.addEdge(_neighborKey, _neighbor, _weight);
+        if (_vertex != null && _neighbor != null){ //If both where found,
+            _vertex.addEdge(_neighborKey, _neighbor, _weight); //do add edge operation.
         }
     }
     
     public void deleteEdge(K _key1, K _key2){
-        if (_key1 != _key2){
-            doDeleteEdge(_key1, _key2);
+        if (_key1 != _key2){ 
+            doDeleteEdge(_key1, _key2); //Delete edge from both vertices.
             doDeleteEdge(_key2, _key1);            
         }
     }
     private void doDeleteEdge(K _vertexKey, K _neighborKey){
         Vertex<K,T> _vertex = map.get(_vertexKey);
-        if (_vertex != null){
+        if (_vertex != null){ //Deletes edge, if vertex was found.
             _vertex.deleteEdge(_neighborKey);
         }
     }
     
     public boolean isNeighbors(K _key1, K _key2){
-        Vertex<K,T> _vertex = map.get(_key1);
+        Vertex<K,T> _vertex = map.get(_key1); //Checks whether two vertices are neighbors.
         if (_vertex != null && _vertex.getEdge(_key2) != null){
             return true;
         }
         return false;
     }
     public ArrayList<Edge<K,T>> getNeighbors(K _key){
-        Vertex<K,T> _vertex = map.get(_key);
+        Vertex<K,T> _vertex = map.get(_key); //Get all neighbors, in an arraylist, of this vertex.
         if (_vertex != null){
             return _vertex.getEdges().toArray();
         }
         return null;
     }
     
+    //Find a path using depth-first, and returns the path in an arraylist.
     public ArrayList<Vertex<K,T>> depthFirst(K _startKey, K _goalKey){
         ArrayList<Vertex<K,T>> _path = new ArrayList<>();
         Vertex<K,T> _startVertex = map.get(_startKey);
         if (_startVertex != null){
-            _startVertex.depthFirst(_goalKey, _path);
+            _startVertex.depthFirst(_goalKey, _path); //Uses vertex's depthFirst method.
         }
-        resetFlags();
+        resetFlags(); //Resets visited flags.
         return _path;
     }
-    
+    //Same as above, this return a path in an arraylist. But it finds the path using breadth-first.
     public ArrayList<Vertex<K,T>> breadthFirst(K _startKey, K _goalKey){
         ArrayList<Vertex<K,T>> _path = new ArrayList<>();
-        ArrayList<VertexPathStruct<K,T>> _queue = new ArrayList<>();
+        ArrayList<VertexPathStruct<K,T>> _queue = new ArrayList<>(); //Queue, used in vertex class's breadth-first method.
         Vertex<K,T> _startVertex = map.get(_startKey);
         if (_startVertex != null){
-            _path.add(_startVertex);
-            _path = _startVertex.breadthFirst(_goalKey, _path, _queue);
+            _path.add(_startVertex); //Adds the startVertex to the path.
+            _path = _startVertex.breadthFirst(_goalKey, _path, _queue); //Uses vertex's breadthFirst method.
         }
-        resetFlags();
+        resetFlags(); //Reset visited flags.
         return _path;
     }
     
@@ -141,26 +142,26 @@ public class Graph <K extends Comparable<K>, T>{
     
     private void resetFlags(){
         for (Vertex<K,T> _vertex: map){
-            _vertex.resetFlag();
+            _vertex.resetFlag(); //Reset flag of every vertex in graph.
         }
     }
     
+    //Graphically draws the graph.
     public void drawGraph(GUI gui){
         // Size of ovals.
         int _height = 60;
         int _width = 60;
         //
-        LinkedList<K,Pos> _positions = getPosList();
+        LinkedList<K,Pos> _positions = getPosList(); //Get a list of positions from method below.
         
         for (Vertex<K,T> _vertex : map){
-            //System.out.println("Node: " + _vertex.getKey() + "   [ " + _positions.get(_vertex.getKey()).x + " , " + _positions.get(_vertex.getKey()).y + " ]");
-            Pos _pos = _positions.get(_vertex.getKey());
-            gui.draw("fillOval", _pos.x, _pos.y, _height, _width, Color.yellow);
-            gui.drawString(_vertex.getCore().toString(), _pos.x+_height/6, _pos.y+_height/2);
+            Pos _pos = _positions.get(_vertex.getKey()); //Pos is a struct, storing an x int, and a y int.
+            gui.draw("fillOval", _pos.x, _pos.y, _height, _width, Color.yellow); //Draws the vertices as yellow ovals, in the position arranged by getPosList method.
+            gui.drawString(_vertex.getCore().toString(), _pos.x+_height/6, _pos.y+_height/2); //Draw core of vertex as string. At a position close to the center of the oval.
             for (Edge<K,T> _edge : _vertex.getEdges()){
                 Pos _posNeighbor = _positions.get(_edge.getVertex().getKey());
-                if (_posNeighbor != null){
-                    gui.drawLine(_pos.x+_height/2, _pos.y+_width/2, _posNeighbor.x+_height/2, _posNeighbor.y+_width/2, 2);
+                if (_posNeighbor != null){ //Draws a line between to neighbors. And draw the weight of the edge, close to the middle of the line.
+                    gui.drawLine(_pos.x+_height/2, _pos.y+_width/2, _posNeighbor.x+_height/2, _posNeighbor.y+_width/2, 1);
                     gui.drawString(Integer.toString(_edge.getWeight()), (((_pos.x+_height/2)+(_posNeighbor.x+_height/2))/2), (((_pos.y+_width/2)+(_posNeighbor.y+_width/2))/2), Color.BLUE);
                 }
             }
@@ -169,19 +170,21 @@ public class Graph <K extends Comparable<K>, T>{
     //Make a linkedlist of positions for each vertex. Used to draw graph graphicly.
     private LinkedList<K,Pos> getPosList(){
         // Values for spacing and positions that will be used.
-        int _xSpace = 120;
-        int _ySpace = 120;
-        int _totalWidth = 5;
-        Pos _pos = new Pos(_xSpace*2,_ySpace);
+        Pos _center = new Pos(400,300); //Center of circle.
+        double _angle = 0;
+        double _radius = 100;
+        double _angleInc = (Math.PI/3);
+//        Pos _pos = new Pos(_xSpace*2,_ySpace);
         //
         LinkedList<K,Pos> _positions = new LinkedList<>();
         for (Vertex<K,T> _vertex : map){
-            _positions.add(_vertex.getKey(), new Pos(_pos.x, _pos.y));
-            _pos.x += _xSpace; //Increment pos.x with xSpace,
-            _pos.y += _ySpace/3;//and pos.y with a third of ySpace.
-            if (_pos.x > _xSpace*_totalWidth){ //When max width is reached, reset pos.x and set pos.y to the next line.
-                _pos.x = _xSpace*2;
-                _pos.y -= _ySpace*(_totalWidth/2 - 2);
+            int _x = _center.x + (int)(_radius * Math.cos(_angle)); //Calculates x
+            int _y = _center.y + (int)(_radius * Math.sin(_angle)); //and y pos.
+            _positions.add(_vertex.getKey(), new Pos(_x,_y));
+            _angle += _angleInc; //Increments angle by an amount decided by angleInc.
+            if (_angle >= Math.PI*2){ //Has come full circle.
+                _angle = 0;
+                _radius *= 2; //Double the radius.
             }
         }
         return _positions;

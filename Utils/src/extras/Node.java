@@ -14,7 +14,7 @@ public class Node<K extends Comparable<K>, T> {
         value = _value;
         previous = _last;
         next = null;
-        index = _index;
+        index = _index; 
     }
     
     public void add(K _key, T _value){
@@ -27,17 +27,17 @@ public class Node<K extends Comparable<K>, T> {
     }
     
     public Node<K,T> get(K _key){
-        if (_key.compareTo(key) == 0){
+        if (_key.compareTo(key) == 0){ //Find node by comparing keys.
             return this;
         }
-        if (next != null){
+        if (next != null){ //Keep looking until node is found, or to the end of the list.
             return next.get(_key);
         }
         return null;
     }
     
     public Node<K,T> getByIndex(int _index){
-        if (_index == index){
+        if (_index == index){ //Use index, instead of key, to find node.
             return this;
         }
         if (next != null){
@@ -46,14 +46,14 @@ public class Node<K extends Comparable<K>, T> {
         return null;
     }
     
-    public void delete(){
+    public void delete(){ //Deletes this node, by linking the next and previous nodes together, bypassing this node.
         previous.next = next;
         if (next != null){
             next.previous = previous;
         }
     }
     
-    public void shiftIndex(){
+    public void shiftIndex(){ //Shifts this node's index, and all nodes after it, to one less. Used when a node is deleted.
         index--;
         if (next != null){
             next.shiftIndex();
@@ -67,7 +67,7 @@ public class Node<K extends Comparable<K>, T> {
         return next;
     }
 
-    public ArrayList<T> toArray(ArrayList<T> _array){
+    public ArrayList<T> toArray(ArrayList<T> _array){ //Used by linkedlist to make arraylist.
         _array.add(value);
         if (next == null){
             return _array;
