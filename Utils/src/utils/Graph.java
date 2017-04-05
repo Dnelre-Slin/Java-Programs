@@ -8,6 +8,8 @@ import guiframe.GUI;
 import guiframe.Pos;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Graph <K extends Comparable<K>, T>{
     private Hashmap<K,Vertex<K,T>> map; //Stores the graph in a hashmap.
@@ -100,43 +102,45 @@ public class Graph <K extends Comparable<K>, T>{
         return _path;
     }
     
+    //Used in prims algorithm.
     private void addToQueue(ArrayList<VertexEdgeStruct<K,T>> _queue, Vertex<K,T> _vertex){
-        _vertex.setVisited(true);
+        _vertex.setVisited(true); //Set vertex to visited.
         for (Edge<K,T> _edge : _vertex.getEdges()){
-            if (!_edge.getVertex().isVisited()){
-                for (int i=0; i<=_queue.size(); i++){ //Makes sure that _queue is always sorted.
-                    if (i == _queue.size()){ // Adds to end of arraylist, if it is the biggest element.
-                        _queue.add(new VertexEdgeStruct<>(_vertex, _edge));
-                        break;
-                    }
-                    if (_edge.getWeight() < _queue.get(i).edge.getWeight()){
-                        _queue.add(i, new VertexEdgeStruct<>(_vertex, _edge));
-                        break;
-                    }
-                }
+            if (!_edge.getVertex().isVisited()){ //Add all vertices that are not already visited to the queue.
+                _queue.add(new VertexEdgeStruct(_vertex, _edge));
             }
         }
+        _queue.sort(new Comparator<VertexEdgeStruct<K, T>> () { //Sort queue using arraylist own sort method.
+            @Override
+            public int compare(VertexEdgeStruct<K, T> t, VertexEdgeStruct<K, T> t1) {
+                return Integer.compare(t.edge.getWeight(), t1.edge.getWeight()); //Compares the weights in edges.
+            }
+        });
     }
+    //Use prims algorithm to get an mst.
     public void prim(Graph<K,T> _mst, Vertex<K,T> _startVertex){
-        ArrayList<VertexEdgeStruct<K,T>> _queue = new ArrayList<>();
-        addToQueue(_queue, _startVertex);
-        _mst.addVertex(_startVertex.getKey(), _startVertex.getCore());
-        while (!_queue.isEmpty()){
-            VertexEdgeStruct<K,T> _struct = _queue.remove(0); //Pop first element.
-            if (!_struct.edge.getVertex().isVisited()){
-                _mst.addVertex(_struct.edge.getVertex().getKey(), _struct.edge.getVertex().getCore());
+        ArrayList<VertexEdgeStruct<K,T>> _queue = new ArrayList<>(); //Make a queue of structs, containing edges and struct. See VertexEdgeStruct for more info.
+        addToQueue(_queue, _startVertex); //Add start vertex's edges to queue, using the method above.
+        _mst.addVertex(_startVertex.getKey(), _startVertex.getCore()); //Add start vertex to mst.
+        while (!_queue.isEmpty()){ //Keep going until all connected vertices are added to mst.
+            VertexEdgeStruct<K,T> _struct = _queue.remove(0); //Pop first element. Since the queue is sorted, it will place the cheapest edge first.
+            if (!_struct.edge.getVertex().isVisited()){ //Check if it is visited. This will make sure that no cycles occur in the mst.
+                //Add the vertex in the edge, in the struct, to the mst, with the same key and core as it's normal graph's counterpart.
+                _mst.addVertex(_struct.edge.getVertex().getKey(), _struct.edge.getVertex().getCore()); 
+                //Connect this vertex, to the vertex that added it to the queue. Both are stored in the struct. This will make an edge in the mst.
                 _mst.addEdge(_struct.vertex.getKey(), _struct.edge.getVertex().getKey(), _struct.edge.getWeight());
             }
-            addToQueue(_queue, _struct.edge.getVertex());
+            addToQueue(_queue, _struct.edge.getVertex()); //Add the recently added vertex's edges to the queue, using the addToQueue method.
         }
     }
+    //Get a minimal spanning tree from the graph.
     public Graph<K,T> getMst(K _startVertexKey){
-        Graph<K,T> _mst = new Graph<>();
-        Vertex<K,T> _startVertex = map.get(_startVertexKey);
+        Graph<K,T> _mst = new Graph<>(); //Instantiate the mst graph.
+        Vertex<K,T> _startVertex = map.get(_startVertexKey); //Find the start-vertex, based on the key provided.
         if (_startVertex != null){
-            prim(_mst, _startVertex);
+            prim(_mst, _startVertex); //Create mst, using prims algorithm.
         }
-        resetFlags();
+        resetFlags(); //Reset all visited flags.
         return _mst;
     }
     
